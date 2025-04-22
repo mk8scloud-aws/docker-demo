@@ -17,10 +17,15 @@ jobs:
           TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
           sed -i "s/{{TIMESTAMP}}/$TIMESTAMP/g" index.html
           git config --global user.name "mk8scloud-aws"
-          git config --global user.email "mk8scloud@gmail.com.com"
+          git config --global user.email "mk8scloud@gmail.com"
           git add index.html
-          git commit -m "Auto-update index.html with timestamp"
-          git push
+          # Only commit and push if there are changes
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-update index.html with timestamp"
+            git push
+          fi
 
       - name: Log in to Private Docker Registry
         run: |
