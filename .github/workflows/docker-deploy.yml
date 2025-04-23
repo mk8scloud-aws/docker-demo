@@ -13,6 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Login to Nexus
+        run: |
+          mkdir -p ~/.docker
+          echo '{
+          "auths": {
+          "http://192.168.0.60:8083": {
+          "auth": "${{ secrets.REGISTRY_AUTH_TOKEN }}"
+          }
+          }
+          }' > ~/.docker/config.json
+
       - name: Update index.html
         run: |
           TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
